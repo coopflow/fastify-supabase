@@ -5,7 +5,10 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+    env:
+      SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+      SUPABASE_PROJECT_URL: ${{ secrets.SUPABASE_PROJECT_URL }}
+
     strategy:
       matrix:
         node-version: [14, 16]
@@ -26,9 +29,6 @@ jobs:
     - name: Run tests & generate coverage
       run: |
         npm run test:ci
-      env:
-        SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
-        SUPABASE_PROJECT_URL: ${{ secrets.SUPABASE_PROJECT_URL }}
 
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@master
