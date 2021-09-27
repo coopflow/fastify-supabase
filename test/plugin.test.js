@@ -102,13 +102,11 @@ test('fastify-supabase should be able to access Supabase functionalities within 
   t.ok(fastify.supabase)
   t.ok(fastify.supabase.test.auth)
 
-  const { data: insertedData, error: insertError } = await fastify.supabase.prod.from('test')
-    .insert({ name: 'coopflow' })
+  const { data: insertedData, error: insertError } = await fastify.supabase.prod.from('test').insert({ name: 'coopflow' })
   t.equal(insertError, null)
   t.equal(insertedData[0].name, 'coopflow')
 
-  const { data: selectedData, error: selectError } = await fastify.supabase.test.from('test')
-    .select('name')
+  const { data: selectedData, error: selectError } = await fastify.supabase.test.from('test').select('name')
   t.equal(selectError, null)
   t.equal(selectedData[0].name, 'coopflow')
 })
