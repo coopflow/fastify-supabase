@@ -21,7 +21,7 @@ The package needs to be added to your project with `register` and you must at le
 const fastify = require('fastify')({ logger: true })
 
 fastify.register(require('fastify-supabase'), {
-  supabaseKey: 'public-anon-key'
+  supabaseKey: 'public-anon-key',
   supabaseUrl: 'https://xyzcompany.supabase.co'
 })
 
@@ -53,13 +53,13 @@ const fastify = require('fastify')({ logger: true })
 
 fastify.register(require('fastify-supabase'), {
   namespace: 'one',
-  supabaseKey: 'public-anon-key-one'
+  supabaseKey: 'public-anon-key-one',
   supabaseUrl: 'https://xyzcompanyprojectone.supabase.co'
 })
 
 fastify.register(require('fastify-supabase'), {
   namespace: 'two',
-  supabaseKey: 'public-anon-key-two'
+  supabaseKey: 'public-anon-key-two',
   supabaseUrl: 'https://xyzcompanyprojecttwo.supabase.co'
 })
 
