@@ -1,10 +1,13 @@
 'use strict'
 
+const { randomUUID } = require('crypto')
 const { beforeEach, test } = require('tap')
 const Fastify = require('fastify')
 const fastifySupabase = require('../plugin')
 
 require('dotenv').config()
+
+const uuid = randomUUID()
 
 beforeEach(async () => {
   const fastify = Fastify()
@@ -15,7 +18,9 @@ beforeEach(async () => {
   })
 
   await fastify.ready()
-  await fastify.supabase.from('test').delete()
+  await fastify.supabase.from('test')
+    .delete()
+    .eq('job', uuid)
   await fastify.close()
 })
 
@@ -68,15 +73,25 @@ test('fastify-supabase should be able to access Supabase functionalities when re
 
   t.ok(fastify.supabase)
 
-  const { data: insertedData, error: insertError } = await fastify.supabase.from('test').insert({
-    name: 'coopflow'
-  })
+  const {
+    data: insertedData,
+    error: insertError
+  } = await fastify.supabase.from('test')
+    .insert({
+      job: uuid,
+      name: `01-coopflow:${uuid}`
+    })
   t.equal(insertError, null)
-  t.equal(insertedData[0].name, 'coopflow')
+  t.equal(insertedData[0].name, `01-coopflow:${uuid}`)
 
-  const { data: selectedData, error: selectError } = await fastify.supabase.from('test').select('name')
+  const {
+    data: selectedData,
+    error: selectError
+  } = await fastify.supabase.from('test')
+    .select('name')
+    .eq('job', uuid)
   t.equal(selectError, null)
-  t.equal(selectedData[0].name, 'coopflow')
+  t.equal(selectedData[0].name, `01-coopflow:${uuid}`)
 })
 
 test('fastify-supabase should be able to access Supabase functionalities within multiple namespaced Supabase instance', async t => {
@@ -102,13 +117,25 @@ test('fastify-supabase should be able to access Supabase functionalities within 
   t.ok(fastify.supabase)
   t.ok(fastify.supabase.test.auth)
 
-  const { data: insertedData, error: insertError } = await fastify.supabase.prod.from('test').insert({ name: 'coopflow' })
+  const {
+    data: insertedData,
+    error: insertError
+  } = await fastify.supabase.prod.from('test')
+    .insert({
+      job: uuid,
+      name: `02-coopflow:${uuid}`
+    })
   t.equal(insertError, null)
-  t.equal(insertedData[0].name, 'coopflow')
+  t.equal(insertedData[0].name, `02-coopflow:${uuid}`)
 
-  const { data: selectedData, error: selectError } = await fastify.supabase.test.from('test').select('name')
+  const {
+    data: selectedData,
+    error: selectError
+  } = await fastify.supabase.test.from('test')
+    .select('name')
+    .eq('job', uuid)
   t.equal(selectError, null)
-  t.equal(selectedData[0].name, 'coopflow')
+  t.equal(selectedData[0].name, `02-coopflow:${uuid}`)
 })
 
 test('fastify-supabase should throw if registered without an API key', t => {
