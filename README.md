@@ -109,8 +109,8 @@ See the [Supabase reference documentation](https://supabase.io/docs/reference/ja
 
 ## Acknowledgements
 
-[Ruan Martinelli](https://ruanmartinelli.com/) for kindly transferring the ownership of the package name.
-This project is kindly sponsored by [coopflow](https://www.coopflow.com).
+- [Ruan Martinelli](https://ruanmartinelli.com/) for kindly transferring the ownership of the package name.
+- This project is kindly sponsored by [coopflow](https://www.coopflow.com).
 
 
 ## License
