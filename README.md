@@ -1,5 +1,6 @@
 # fastify-supabase
 
+[![NPM version](https://img.shields.io/npm/v/fastify-supabase.svg?style=flat)](https://www.npmjs.com/package/fastify-supabase)
 [![GitHub CI](https://github.com/coopflow/fastify-supabase/workflows/GitHub%20CI/badge.svg)](https://github.com/coopflow/fastify-supabase/actions?workflow=GitHub+CI)
 [![Coverage Status](https://coveralls.io/repos/github/coopflow/fastify-supabase/badge.svg?branch=main)](https://coveralls.io/github/coopflow/fastify-supabase?branch=main)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
