@@ -125,7 +125,7 @@ CREATE TABLE "public"."fastify_supabase_test" (
 SUPABASE_API_KEY=public-anon-key-of-your-project
 SUPABASE_PROJECT_URL=https://xyzcompany.supabase.co
 ```
-- Run tests
+- Finally run tests with:
 ```sh
 npm run test
 ```
