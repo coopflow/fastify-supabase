@@ -100,13 +100,35 @@ fastify.listen(3000, err => {
 
 * `localStorage` **[ optional ]** `<SupabaseAuthClientOptions['localStorage']>`: A storage provider. Used to store the logged in session.
 
-* `realtime` **[ optional ]** `<RealtimeClientOptions>`: Options passed to the realtime-js instance
+* `realtime` **[ optional ]** `<RealtimeClientOptions>`: Options passed to the realtime-js instance.
 
 *__Note for TypeScript users__: If you are a TypeScript user, take a look at [Supabase Generating Types documentation](https://supabase.io/docs/reference/javascript/generating-types).*
 
 ## Documentation
 
 See the [Supabase reference documentation](https://supabase.io/docs/reference/javascript/supabase-client).
+
+## Testing
+
+- Create a test table in your [Supabase](https://app.supabase.io) project database with:
+```SQL
+CREATE TABLE "public"."fastify_supabase_test" (
+  "id" uuid DEFAULT GEN_RANDOM_UUID() NOT NULL,
+  "job" uuid NOT NULL,
+  "name" character varying NOT NULL,
+  "created_at" timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  CONSTRAINT "fastify_supabase_test_id__pkey" PRIMARY KEY ("id")
+) WITH (oids = false);
+```
+- Create a file named `.env` (at the root of this project) providing your `supabaseKey` and `supabaseUrl`:
+```sh
+SUPABASE_API_KEY=public-anon-key-of-your-project
+SUPABASE_PROJECT_URL=https://xyzcompany.supabase.co
+```
+- Run tests
+```sh
+npm run test
+```
 
 ## Acknowledgements
 
