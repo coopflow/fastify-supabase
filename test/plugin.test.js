@@ -18,7 +18,7 @@ beforeEach(async () => {
   })
 
   await fastify.ready()
-  await fastify.supabase.from('test')
+  await fastify.supabase.from('fastify_supabase_test')
     .delete()
     .eq('job', uuid)
   await fastify.close()
@@ -76,7 +76,7 @@ test('fastify-supabase should be able to access Supabase functionalities when re
   const {
     data: insertedData,
     error: insertError
-  } = await fastify.supabase.from('test')
+  } = await fastify.supabase.from('fastify_supabase_test')
     .insert({
       job: uuid,
       name: `01-coopflow:${uuid}`
@@ -87,7 +87,7 @@ test('fastify-supabase should be able to access Supabase functionalities when re
   const {
     data: selectedData,
     error: selectError
-  } = await fastify.supabase.from('test')
+  } = await fastify.supabase.from('fastify_supabase_test')
     .select('name')
     .eq('job', uuid)
   t.equal(selectError, null)
@@ -120,7 +120,7 @@ test('fastify-supabase should be able to access Supabase functionalities within 
   const {
     data: insertedData,
     error: insertError
-  } = await fastify.supabase.prod.from('test')
+  } = await fastify.supabase.prod.from('fastify_supabase_test')
     .insert({
       job: uuid,
       name: `02-coopflow:${uuid}`
@@ -131,7 +131,7 @@ test('fastify-supabase should be able to access Supabase functionalities within 
   const {
     data: selectedData,
     error: selectError
-  } = await fastify.supabase.test.from('test')
+  } = await fastify.supabase.test.from('fastify_supabase_test')
     .select('name')
     .eq('job', uuid)
   t.equal(selectError, null)
