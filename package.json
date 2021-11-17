@@ -1,6 +1,6 @@
 {
   "name": "fastify-supabase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Supabase client initialization and encapsulation in fastify framework",
   "main": "plugin.js",
   "types": "plugin.d.ts",
