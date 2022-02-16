@@ -1,50 +1,49 @@
 name: GitHub CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
 
 jobs:
   linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Use Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 16
-
-      - name: Install
+      - name: Install dependencies
         run: npm install
-
       - name: Lint code
         run: npm run lint
 
   test:
     needs: linter
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         node-version: [14, 16, 17]
         os: [ubuntu-latest, windows-latest, macos-latest]
-
     steps:
     - uses: actions/checkout@v2
-
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Install
+    - name: Install dependencies
       run: npm install --ignore-scripts
-
     - name: Run tests & generate coverage
       env:
         SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
         SUPABASE_PROJECT_URL: ${{ secrets.SUPABASE_PROJECT_URL }}
       run: npm run test:ci
-
     - name: Coveralls Parallel
       uses: coverallsapp/github-action@master
       with:
