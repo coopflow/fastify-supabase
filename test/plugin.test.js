@@ -24,7 +24,7 @@ beforeEach(async () => {
   await fastify.close()
 })
 
-test('fastify.supabase namespace should exist', async t => {
+test('fastify.supabase namespace should exist', async (t) => {
   t.plan(1)
 
   const fastify = Fastify()
@@ -40,7 +40,7 @@ test('fastify.supabase namespace should exist', async t => {
   t.ok(fastify.supabase)
 })
 
-test('fastify.supabase.test namespace should exist', async t => {
+test('fastify.supabase.test namespace should exist', async (t) => {
   t.plan(2)
 
   const fastify = Fastify()
@@ -58,7 +58,7 @@ test('fastify.supabase.test namespace should exist', async t => {
   t.ok(fastify.supabase.test)
 })
 
-test('fastify-supabase should be able to access Supabase functionalities when registered without a namespaced instance', async t => {
+test('fastify-supabase should be able to access Supabase functionalities when registered without a namespaced instance', async (t) => {
   t.plan(5)
 
   const fastify = Fastify()
@@ -94,7 +94,7 @@ test('fastify-supabase should be able to access Supabase functionalities when re
   t.equal(selectedData[0].name, `01-coopflow:${uuid}`)
 })
 
-test('fastify-supabase should be able to access Supabase functionalities within multiple namespaced Supabase instance', async t => {
+test('fastify-supabase should be able to access Supabase functionalities within multiple namespaced Supabase instance', async (t) => {
   t.plan(6)
 
   const fastify = Fastify()
@@ -138,34 +138,44 @@ test('fastify-supabase should be able to access Supabase functionalities within 
   t.equal(selectedData[0].name, `02-coopflow:${uuid}`)
 })
 
-test('fastify-supabase should throw if registered without an API key', t => {
-  t.plan(1)
+test('fastify-supabase should throw if registered without an API key', async (t) => {
+  t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.register(fastifySupabase, { supabaseUrl: process.env.SUPABASE_PROJECT_URL })
 
-  fastify.ready(errors => {
-    t.equal(errors.message, 'You must provide a Supabase API key')
-  })
+  try {
+    await fastify.ready()
+  } catch (err) {
+    t.ok(err)
+    t.equal(err.message, 'You must provide a Supabase API key')
+  }
 })
 
-test('fastify-supabase should throw if registered without a Supabase project URL', t => {
-  t.plan(1)
+test('fastify-supabase should throw if registered without a Supabase project URL', async (t) => {
+  t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.register(fastifySupabase, { supabaseKey: process.env.SUPABASE_API_KEY })
 
-  fastify.ready(errors => {
-    t.equal(errors.message, 'You must provide a Supabase Project URL')
-  })
+  try {
+    await fastify.ready()
+  } catch (err) {
+    t.ok(err)
+    t.equal(err.message, 'You must provide a Supabase Project URL')
+  }
 })
 
-test('fastify-supabase should throw with duplicate instance names', t => {
-  t.plan(1)
+test('fastify-supabase should throw with duplicate instance names', async (t) => {
+  t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
+
   const namespace = 'test'
 
   fastify
@@ -180,15 +190,20 @@ test('fastify-supabase should throw with duplicate instance names', t => {
       supabaseUrl: process.env.SUPABASE_PROJECT_URL
     })
 
-  fastify.ready(errors => {
-    t.equal(errors.message, `Supabase client '${namespace}' instance name has already been registered`)
-  })
+  try {
+    await fastify.ready()
+  } catch (err) {
+    t.ok(err)
+    t.equal(err.message, `Supabase client '${namespace}' instance name has already been registered`)
+  }
 })
 
-test('fastify-supabase should throw when trying to register an instance with a reserved `namespace` keyword', t => {
-  t.plan(1)
+test('fastify-supabase should throw when trying to register an instance with a reserved `namespace` keyword', async (t) => {
+  t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
+
   const namespace = 'auth'
 
   fastify.register(fastifySupabase, {
@@ -197,15 +212,19 @@ test('fastify-supabase should throw when trying to register an instance with a r
     supabaseUrl: process.env.SUPABASE_PROJECT_URL
   })
 
-  fastify.ready(errors => {
-    t.equal(errors.message, `fastify-supabase '${namespace}' is a reserved keyword`)
-  })
+  try {
+    await fastify.ready()
+  } catch (err) {
+    t.ok(err)
+    t.equal(err.message, `fastify-supabase '${namespace}' is a reserved keyword`)
+  }
 })
 
-test('fastify-supabase should throw when trying to register multiple instances without giving a name', t => {
-  t.plan(1)
+test('fastify-supabase should throw when trying to register multiple instances without giving a name', async (t) => {
+  t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
 
   fastify
     .register(fastifySupabase, {
@@ -217,15 +236,19 @@ test('fastify-supabase should throw when trying to register multiple instances w
       supabaseUrl: process.env.SUPABASE_PROJECT_URL
     })
 
-  fastify.ready(errors => {
-    t.equal(errors.message, 'fastify-supabase has already been registered')
-  })
+  try {
+    await fastify.ready()
+  } catch (err) {
+    t.ok(err)
+    t.equal(err.message, 'fastify-supabase has already been registered')
+  }
 })
 
-test('fastify-supabase should not throw if registered within different scopes (with and without namespaced instances)', t => {
+test('fastify-supabase should not throw if registered within different scopes (with and without namespaced instances)', (t) => {
   t.plan(2)
 
   const fastify = Fastify()
+  t.teardown(fastify.close.bind(fastify))
 
   fastify.register(function scopeOne (instance, opts, next) {
     instance.register(fastifySupabase, {
@@ -252,13 +275,13 @@ test('fastify-supabase should not throw if registered within different scopes (w
     next()
   })
 
-  fastify.ready(errors => {
-    t.error(errors)
-    t.equal(errors, undefined)
+  fastify.ready((err) => {
+    t.error(err)
+    t.equal(err, undefined)
   })
 })
 
-test('fastify-supabase should be able to register multiple instances (with and without namespaced instances)', async t => {
+test('fastify-supabase should be able to register multiple instances (with and without namespaced instances)', async (t) => {
   t.plan(2)
 
   const fastify = Fastify()
