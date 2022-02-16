@@ -34,7 +34,7 @@ fastify.get('/read', async (request, reply) => {
   return { data, error }
 })
 
-fastify.listen(3000, err => {
+fastify.listen(3000, (err) => {
   if (err) {
     fastify.log.error(err)
     process.exit(1)
@@ -80,7 +80,7 @@ fastify.get('/fetch-from-two', async (request, reply) => {
   return { data, error }
 })
 
-fastify.listen(3000, err => {
+fastify.listen(3000, (err) => {
   if (err) {
     fastify.log.error(err)
     process.exit(1)
